@@ -12,6 +12,8 @@ const port = process.env.API_PORT || 3001;
 const baseUrl = process.env.AUTH0_BASE_URL;
 const issuerBaseUrl = process.env.AUTH0_ISSUER_BASE_URL;
 const audience = process.env.AUTH0_AUDIENCE;
+const clientID = process.env.CLIENT_ID;
+const clientSecret = process.env.CLIENT_SECRET;
 
 if (!baseUrl || !issuerBaseUrl) {
   throw new Error('Please make sure that the file .env.local is in place and populated');
@@ -38,17 +40,31 @@ const checkJwt = jwt({
   algorithms: ['RS256']
 });
 
-app.get('/api/shows', checkJwt, (req, res) => {
-  res.send({
-    msg: 'Your access token was successfully validated!'
+app.use(checkJwt);
+
+app.get('/', checkJwt, async (req, res) => {
+  let options = {
+    method: 'POST',
+    url: `${issuerBaseUrl}/oauth/token`,
+    headers: { 'content-type': 'application/json' },
+    data: {
+      grant_type: 'client_credentials',
+      client_id: clientID,
+      client_secret: clientSecret,
+      audience: audience
+    }
+  };
+  const managementAPIToken = await axios.request(options).then(res => {
+    return `Bearer ${res.data.access_token}`;
   });
 });
 
-app.get('/api/actions', checkJwt, (req, res) => {
-  res.send({
-    msg: 'Your access token was successfully validated!'
-  });
-});
+
+// app.get('/api/actions', checkJwt, (req, res) => {
+//   res.send({
+//     msg: 'Your access token was successfully validated!'
+//   });
+// });
 
 const server = app.listen(port, () => console.log(`API Server listening on port ${port}`));
 process.on('SIGINT', () => server.close());
