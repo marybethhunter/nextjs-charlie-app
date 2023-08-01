@@ -14,6 +14,7 @@ const issuerBaseUrl = process.env.AUTH0_ISSUER_BASE_URL;
 const audience = process.env.AUTH0_AUDIENCE;
 const clientID = process.env.AUTH0_CLIENT_ID;
 const clientSecret = process.env.AUTH0_CLIENT_SECRET;
+const managementAPIaudience = process.env.AUTH0_MGMT_AUDIENCE;
 
 if (!baseUrl || !issuerBaseUrl) {
   throw new Error('Please make sure that the file .env.local is in place and populated');
@@ -51,7 +52,7 @@ app.get('/api/actions', checkJwt, async (req, res) => {
       grant_type: 'client_credentials',
       client_id: clientID,
       client_secret: clientSecret,
-      audience: audience
+      audience: 'https://dev-dtxjx06qdlijgvke.us.auth0.com/api/v2/'
     }
   };
 
@@ -59,11 +60,9 @@ app.get('/api/actions', checkJwt, async (req, res) => {
     return `Bearer ${res.data.access_token}`;
   });
 
-  console.log(managementAPIToken);
-
   // Retrieve all Clients in tenant
   const allClients = await axios
-    .get(`${audience}/clients`, {
+    .get(`https://dev-dtxjx06qdlijgvke.us.auth0.com/api/v2/clients`, {
       headers: { authorization: managementAPIToken }
     })
     .then(res => {
@@ -72,12 +71,15 @@ app.get('/api/actions', checkJwt, async (req, res) => {
 
   // Retrieve all Actions in tenant
   const allActions = await axios
-    .get(`${audience}/actions/actions`, {
+    .get(`https://dev-dtxjx06qdlijgvke.us.auth0.com/api/v2/actions/actions`, {
       headers: { authorization: managementAPIToken }
     })
     .then(res => {
       return res.data;
     });
+    res.send(
+      allActions
+    )
 });
 
 const server = app.listen(port, () => console.log(`API Server listening on port ${port}`));
