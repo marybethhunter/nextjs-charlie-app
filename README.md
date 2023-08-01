@@ -1,6 +1,6 @@
 # Charlie's Custom Applications List
 
-Hi, Charlie! I have created this README for you to easily run this project locally and deploy it to Netlify.
+Hi, Charlie! I have created this README for you to easily run this project locally and deploy it to Vercel.
 
 ## Project setup
 
