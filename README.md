@@ -82,4 +82,6 @@ On the profile page, you will see your picture, name, and email address, as well
 
 ## Deployment
 
+I used Vercel to deploy this application. If you do not have a Vercel account, you can easily make one [here](https://www.vercel.com). Once you are logged in to your account, you can select `Add New Project` button and import your github repository for the project. You will need to update the Environment Variables in the Vercel Project Setup to how they are in your .env.local file. Click `Deploy`.
 
+You will need to add your new Vercel domain to your .env.local file. Replace the `AUTH0_BASE_URL="http://localhost:3000"` with your this new domain. You will also need to update the Allowed Callback URLs to `${YOUR_VERCEL_DOMAIN}/api/auth/callback` and Allowed Logout URLs to `${YOUR_VERCEL_DOMAIN}` in your Auth0 tenant. Save all changes.
