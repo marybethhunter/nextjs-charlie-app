@@ -1,5 +1,5 @@
 require('dotenv').config({ path: './.env.local' });
-
+const axios = require('axios').default;
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
@@ -12,8 +12,8 @@ const port = process.env.API_PORT || 3001;
 const baseUrl = process.env.AUTH0_BASE_URL;
 const issuerBaseUrl = process.env.AUTH0_ISSUER_BASE_URL;
 const audience = process.env.AUTH0_AUDIENCE;
-const clientID = process.env.CLIENT_ID;
-const clientSecret = process.env.CLIENT_SECRET;
+const clientID = process.env.AUTH0_CLIENT_ID;
+const clientSecret = process.env.AUTH0_CLIENT_SECRET;
 
 if (!baseUrl || !issuerBaseUrl) {
   throw new Error('Please make sure that the file .env.local is in place and populated');
@@ -42,7 +42,7 @@ const checkJwt = jwt({
 
 app.use(checkJwt);
 
-app.get('/', checkJwt, async (req, res) => {
+app.get('/api/actions', checkJwt, async (req, res) => {
   let options = {
     method: 'POST',
     url: `${issuerBaseUrl}/oauth/token`,
@@ -54,17 +54,31 @@ app.get('/', checkJwt, async (req, res) => {
       audience: audience
     }
   };
+
   const managementAPIToken = await axios.request(options).then(res => {
     return `Bearer ${res.data.access_token}`;
   });
+
+  console.log(managementAPIToken);
+
+  // Retrieve all Clients in tenant
+  const allClients = await axios
+    .get(`${audience}/clients`, {
+      headers: { authorization: managementAPIToken }
+    })
+    .then(res => {
+      return res.data;
+    });
+
+  // Retrieve all Actions in tenant
+  const allActions = await axios
+    .get(`${audience}/actions/actions`, {
+      headers: { authorization: managementAPIToken }
+    })
+    .then(res => {
+      return res.data;
+    });
 });
-
-
-// app.get('/api/actions', checkJwt, (req, res) => {
-//   res.send({
-//     msg: 'Your access token was successfully validated!'
-//   });
-// });
 
 const server = app.listen(port, () => console.log(`API Server listening on port ${port}`));
 process.on('SIGINT', () => server.close());
