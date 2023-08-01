@@ -57,8 +57,6 @@ app.get('/api/actions', checkJwt, async (req, res) => {
     }
   };
 
-  console.log(req.auth);
-
   const managementAPIToken = await axios.request(options).then(res => {
     return `Bearer ${res.data.access_token}`;
   });
