@@ -42,6 +42,8 @@ Then navigate to `Users` under the User Management sidebar and select the user(s
 
 For any other non-Manager authenticated users that you want to be able to view the list (minus the triggers), go into those users and ensure that under the `Permissions` tab that those users have `read:actions` and `read:clients` assigned.
 
+[Documentation: Configure Core Authorization Features for Role-Based Access Control](https://auth0.com/docs/manage-users/access-control/configure-core-rbac)
+
 ## Configuration
 
 ### Configure credentials
