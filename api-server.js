@@ -15,6 +15,7 @@ const audience = process.env.AUTH0_AUDIENCE;
 const clientID = process.env.AUTH0_CLIENT_ID;
 const clientSecret = process.env.AUTH0_CLIENT_SECRET;
 const managementAPIaudience = process.env.AUTH0_MGMT_AUDIENCE;
+const managerID = process.env.AUTH0_MANAGER_ID;
 
 if (!baseUrl || !issuerBaseUrl) {
   throw new Error('Please make sure that the file .env.local is in place and populated');
@@ -56,6 +57,8 @@ app.get('/api/actions', checkJwt, async (req, res) => {
     }
   };
 
+  console.log(req.auth);
+
   const managementAPIToken = await axios.request(options).then(res => {
     return `Bearer ${res.data.access_token}`;
   });
@@ -91,12 +94,20 @@ app.get('/api/actions', checkJwt, async (req, res) => {
 
     finalList.forEach(client => {
       const matchingActions = finalActionsArray.filter(action => action.code?.includes(client.id));
-      if (matchingActions.length > 0) {
+      if (matchingActions.length > 0 && req.auth.permissions.includes('read:triggers')) {
         matchingActions.forEach(action => {
           client.actions.push({
             id: action.id,
             name: action.name,
             trigger: action.supported_triggers[0].id
+          });
+        });
+      }
+      if (matchingActions.length > 0 && !req.auth.permissions.includes('read:triggers')) {
+        matchingActions.forEach(action => {
+          client.actions.push({
+            id: action.id,
+            name: action.name
           });
         });
       } else {
