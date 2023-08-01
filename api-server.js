@@ -52,7 +52,7 @@ app.get('/api/actions', checkJwt, async (req, res) => {
       grant_type: 'client_credentials',
       client_id: clientID,
       client_secret: clientSecret,
-      audience: 'https://dev-dtxjx06qdlijgvke.us.auth0.com/api/v2/'
+      audience: managementAPIaudience
     }
   };
 
@@ -60,26 +60,22 @@ app.get('/api/actions', checkJwt, async (req, res) => {
     return `Bearer ${res.data.access_token}`;
   });
 
-  // Retrieve all Clients in tenant
-  const allClients = await axios
-    .get(`https://dev-dtxjx06qdlijgvke.us.auth0.com/api/v2/clients`, {
+  const getAllActions = await axios
+    .get(`${managementAPIaudience}actions/actions`, {
       headers: { authorization: managementAPIToken }
     })
     .then(res => {
       return res.data;
     });
+  res.send(getAllActions);
 
-  // Retrieve all Actions in tenant
-  const allActions = await axios
-    .get(`https://dev-dtxjx06qdlijgvke.us.auth0.com/api/v2/actions/actions`, {
+  const getAllClients = await axios
+    .get(`${managementAPIaudience}clients`, {
       headers: { authorization: managementAPIToken }
     })
     .then(res => {
       return res.data;
     });
-    res.send(
-      allActions
-    )
 });
 
 const server = app.listen(port, () => console.log(`API Server listening on port ${port}`));
