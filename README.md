@@ -1,6 +1,6 @@
 # Charlie's Custom Applications List
 
-Hi, Charlie! I have created this README for you to easily run this project locally and deploy it to Netlify. 
+Hi, Charlie! I have created this README for you to easily run this project locally and deploy it to Vercel.
 
 ## Project setup
 
@@ -12,7 +12,6 @@ https://github.com/marybethhunter/nextjs-charlie-app.git
 
 You could also fork the project to your github account and clone the fork.
 
-
 Use `npm` to install the project dependencies:
 
 ```bash
@@ -20,6 +19,8 @@ npm install
 ```
 
 ## Tenant Setup
+
+### API/Application Setup
 
 1. First, you will need to create a new Application in the Auth0 Dashboard. Please name your application, select `Regular Web Applications` and, click `Create`. The dashboard will then ask you to pick which technology you are using for your project. Please select `Next.js`. [Here is the Quickstart guide I used for reference](https://auth0.com/docs/quickstart/webapp/nextjs/01-login), but you should only have to update the Allowed Callback URLs to `http://localhost:3000/api/auth/callback`, Allowed Logout URLs to `http://localhost:3000`, and ensure that the following Grants are checked under the `Advanced Settings => Grant Types` tabs at the bottom of your applications settings page: 'Implicit,' 'Authorization Code,' 'Refresh Token,' and 'Client Credentials'. The rest of the steps in the above Quickstart will be take care of for you. Be sure to Save All Changes.
 
@@ -29,7 +30,17 @@ In the Machine to Machine Applications tab of the Management API, you will need 
 
 3. You will need to [create the second API](https://auth0.com/docs/authorization/apis) using the [management dashboard](https://manage.auth0.com/#/apis). You can name this API anything you wish. For example, mine is just named "Test API". This will give you an API Identifier that you can use in the `AUTH0_AUDIENCE` environment variable below. Then you will need to [add permissions](https://auth0.com/docs/get-started/dashboard/add-api-permissions) named `read:actions` and `read:clients` to your API. To get your app to ask for that permission, include it in the value of the `AUTH0_SCOPE` environment variable.
 
-In the Permissions tab of this Test API you just made you will need to add `read:actions` and `read:clients` as scopes. In the Machine to Machine Applications tab, you will need to have both the Auth0 Management API and your Next.js application authorized with `read:actions` and `read:clients` as scopes. Make sure to Update the changes.
+In the main `Settings` tab of this Test API you just made, you will need to be sure to enable both of the `RBAC Settings` near the bottom of the page. Save all changes.
+
+In the Permissions tab of this Test API you just made you will need to add `read:actions`, `read:clients`, and `read:triggers` as scopes. In the Machine to Machine Applications tab, you will need to have both the Auth0 Management API and your Next.js application authorized with `read:actions` and `read:clients` as scopes. Make sure to Update the changes.
+
+### Role/User Setup
+
+In your tenant, you will need to create a Manager Role under the User Management sidebar. Click `Create Role` and follow the setup steps. Once created, click on the new Manager role. Under the `Permissions` tab, select `Add Permissions`. Select your Test API from the dropdown menu and add `read:actions`, `read:clients`, and `read:triggers`.
+
+Then navigate to `Users` under the User Management sidebar and select the user(s) that you would like to give the Manager role to. Under the `Roles` tab, select `Assign Roles` and assign the Manager role to this user. Under the `Permissions` tab, be sure that `read:actions`, `read:clients`, and `read:triggers` are also assigned.
+
+For any other non-Manager authenticated users that you want to be able to view the list (minus the triggers), go into those users and ensure that under the `Permissions` tab that those users have `read:actions` and `read:clients` assigned.
 
 ## Configuration
 
@@ -76,7 +87,7 @@ npm run dev
 
 ### Login
 
-Once you have done all of the above in your Auth0 tenant and on your machine configuring this project, you are ready to use the app! Once you run `npm run dev` and visit `http://localhost:3000` you will see a standard Next.js homepage. Click the `Login` and sign in with your Auth0 account information. You should see your profile picture and there will be an option in the dropdown by your profile picture to visit your profile. 
+Once you have done all of the above in your Auth0 tenant and on your machine configuring this project, you are ready to use the app! Once you run `npm run dev` and visit `http://localhost:3000` you will see a standard Next.js homepage. Click the `Login` and sign in with your Auth0 account information. You should see your profile picture and there will be an option in the dropdown by your profile picture to visit your profile.
 
 On the profile page, you will see your picture, name, and email address, as well as a section called `Applications List` with a `Generate List` button. Click the button and your requested dynamic list should populate the code block on the page.
 
