@@ -67,7 +67,6 @@ app.get('/api/actions', checkJwt, async (req, res) => {
     .then(res => {
       return res.data;
     });
-  // res.send(getAllActions);
 
   const getAllClients = await axios
     .get(`${managementAPIaudience}clients`, {
