@@ -67,7 +67,6 @@ app.get('/api/actions', checkJwt, async (req, res) => {
     .then(res => {
       return res.data;
     });
-  res.send(getAllActions);
 
   const getAllClients = await axios
     .get(`${managementAPIaudience}clients`, {
@@ -76,6 +75,46 @@ app.get('/api/actions', checkJwt, async (req, res) => {
     .then(res => {
       return res.data;
     });
+
+  let finalList = [];
+  let noActionMessage = { message: 'This application has no associated actions.' };
+
+  const match = (clients, actions) => {
+    clients.forEach(client => {
+      const oneSingleClient = { name: client.name, id: client.client_id, actions: [] };
+      finalList.push(oneSingleClient);
+    });
+
+    const actionsArray = Object.values(actions);
+
+    const finalActionsArray = actionsArray.flat();
+
+    finalList.forEach(client => {
+      const matchingActions = finalActionsArray.filter(action => action.code?.includes(client.id));
+      if (matchingActions.length > 0) {
+        matchingActions.forEach(action => {
+          client.actions.push({
+            id: action.id,
+            name: action.name,
+            trigger: action.supported_triggers[0].id
+          });
+        });
+      } else {
+        client.actions.push(noActionMessage);
+      }
+    });
+  };
+
+  match(getAllClients, getAllActions);
+
+  const removeLast = array => {
+    array.length--;
+    return array;
+  };
+
+  removeLast(finalList);
+
+  res.send(finalList);
 });
 
 const server = app.listen(port, () => console.log(`API Server listening on port ${port}`));
