@@ -11,7 +11,7 @@ export default withApiAuthRequired(async function actions(req, res) {
     const path =
       devEnvironment === 'development'
         ? `http://localhost:${apiPort}/api/actions`
-        : `https://nextjs-charlie-app.vercel.app/api/actions`; -- change this to api hosted
+        : `https://nextjs-charlie-app.vercel.app/api/actions`;
 
     const response = await fetch(path, {
       headers: {
