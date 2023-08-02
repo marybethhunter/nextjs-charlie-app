@@ -16,7 +16,6 @@ const audience = process.env.AUTH0_AUDIENCE;
 const clientID = process.env.AUTH0_CLIENT_ID;
 const clientSecret = process.env.AUTH0_CLIENT_SECRET;
 const managementAPIaudience = process.env.AUTH0_MGMT_AUDIENCE;
-const managerID = process.env.AUTH0_MANAGER_ID;
 
 if (!baseUrl || !issuerBaseUrl) {
   throw new Error('Please make sure that the file .env.local is in place and populated');
