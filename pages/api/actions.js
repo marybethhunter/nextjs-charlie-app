@@ -8,10 +8,12 @@ export default withApiAuthRequired(async function actions(req, res) {
 
     const devEnvironment = process.env.DEPLOY_ENV;
     const apiPort = process.env.API_PORT || 3001;
-    const path =
-      devEnvironment === 'development'
-        ? `http://localhost:${apiPort}/api/actions`
-        : `${process.env.DEPLOY_URL}/api/actions`;
+    // const path =
+    //   devEnvironment === 'development'
+    //     ? `http://localhost:${apiPort}/api/actions`
+    //     : `${process.env.DEPLOY_URL}/api/actions`;
+
+    const path = 'https://nextjs-charlie.netlify.app/api/actions'
 
     const response = await fetch(path, {
       headers: {
