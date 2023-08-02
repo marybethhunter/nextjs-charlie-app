@@ -35,9 +35,9 @@ function External() {
       <div className="mb-5" data-testid="external">
         <h1 data-testid="external-title">External API</h1>
         <div data-testid="external-text">
-          <p className="lead">
+          {/* <p className="lead">
             Ping an external API by clicking the button below
-          </p>
+          </p> */}
           <p>
           This will call a local API on port 3001 that would have been started if you run <code>npm run dev</code>.
           </p>
@@ -50,9 +50,9 @@ function External() {
           for more info).
           </p>
         </div>
-        <Button color="primary" className="mt-5" onClick={e => handle(e, callApi)} data-testid="external-action">
+        {/* <Button color="primary" className="mt-5" onClick={e => handle(e, callApi)} data-testid="external-action">
           Ping API
-        </Button>
+        </Button> */}
       </div>
       <div className="result-block-container">
         {isLoading && <Loading />}
