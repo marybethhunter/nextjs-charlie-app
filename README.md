@@ -97,4 +97,4 @@ On the profile page, you will see your picture, name, and email address, as well
 
 I used Netlify to deploy this application. If you do not have a Netlify account, you can easily make one [here](https://www.netlify.com). Once you are logged in to your account, you can select `Add New Site` button and import your github repository for the project. You will need to update the Environment Variables in the Netlify Project Setup to how they are in your .env.local file. Click `Deploy`.
 
-You will need to add your new Netlify domain to your .env.local file. You will need to update the Allowed Callback URLs to `${YOUR_VERCEL_DOMAIN}/api/auth/callback` and Allowed Logout URLs to `${YOUR_VERCEL_DOMAIN}` in your Auth0 tenant. Save all changes.
+You will need to add your new Netlify domain to your .env.local file. You will need to update the Allowed Callback URLs to `${YOUR_NETLIFY_DOMAIN}/api/auth/callback` and Allowed Logout URLs to `${YOUR_NETLIFY_DOMAIN}` in your Auth0 tenant. Save all changes.
