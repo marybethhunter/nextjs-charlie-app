@@ -15,7 +15,8 @@ export default withApiAuthRequired(async function actions(req, res) {
 
     const response = await fetch(path, {
       headers: {
-        Authorization: `Bearer ${accessToken}`
+        Authorization: `Bearer ${accessToken}`,
+        cookie: req.headers.cookie
       }
     });
 
