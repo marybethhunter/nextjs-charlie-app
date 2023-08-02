@@ -7,7 +7,7 @@ export default withApiAuthRequired(async function actions(req, res) {
 
     });
     
-    const devEnvironment = 'development';
+    const devEnvironment = 'production';
     const apiPort = process.env.API_PORT || 3001;
     const path =
       devEnvironment === 'development'
