@@ -13,7 +13,7 @@ export default withApiAuthRequired(async function actions(req, res) {
     //     ? `http://localhost:${apiPort}/api/actions`
     //     : `${process.env.DEPLOY_URL}/api/actions`;
 
-    const path = 'https://nextjs-charlie.netlify.app/api/actions'
+    const path = '/api/actions'
 
     const response = await fetch(path, {
       headers: {
