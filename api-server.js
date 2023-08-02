@@ -16,7 +16,6 @@ const audience = process.env.AUTH0_AUDIENCE;
 const clientID = process.env.AUTH0_CLIENT_ID;
 const clientSecret = process.env.AUTH0_CLIENT_SECRET;
 const managementAPIaudience = process.env.AUTH0_MGMT_AUDIENCE;
-const vercelURL = process.env.VERCEL_DEPLOY_URL;
 const netlifyURL = process.env.NETLIFY_DEPLOY_URL;
 
 if (!baseUrl || !issuerBaseUrl) {
@@ -30,7 +29,7 @@ if (!audience) {
 
 app.use(morgan('dev'));
 app.use(helmet());
-app.use(cors({ origin: baseUrl || vercelURL || netlifyURL }));
+app.use(cors({ origin: baseUrl || netlifyURL }));
 
 const checkJwt = jwt({
   secret: jwksRsa.expressJwtSecret({

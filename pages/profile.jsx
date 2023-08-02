@@ -1,36 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Row, Col } from 'reactstrap';
 import { useUser, withPageAuthRequired } from '@auth0/nextjs-auth0/client';
-import { Button } from 'reactstrap';
 import Loading from '../components/Loading';
 import ErrorMessage from '../components/ErrorMessage';
-import Highlight from '../components/Highlight';
 
 function Profile() {
   const { user, isLoading } = useUser();
-  const [list, setList] = useState({ response: undefined, error: undefined });
-
-  const callApi = async () => {
-    setList(previous => ({ ...previous, isLoading: true }));
-
-    try {
-      const response = await fetch('/api/actions');
-      const data = await response.json();
-
-      setList(previous => ({ ...previous, response: data, error: undefined }));
-    } catch (error) {
-      setList(previous => ({ ...previous, response: undefined, error }));
-    } finally {
-      setList(previous => ({ ...previous, isLoading: false }));
-    }
-  };
-
-  const handle = (event, fn) => {
-    event.preventDefault();
-    fn();
-  };
-
-  const { response, error } = list;
 
   return (
     <>
@@ -54,17 +29,6 @@ function Profile() {
               </p>
             </Col>
           </Row>
-          <div>
-            <h3>Applications List</h3>
-            <Button
-              style={{ marginBottom: '12px', marginTop: '12px' }}
-              color="primary"
-              onClick={e => handle(e, callApi)}
-              data-testid="external-action">
-              Generate List
-            </Button>
-            <Highlight>{JSON.stringify(list, null, 2)}</Highlight>
-          </div>
         </>
       )}
     </>

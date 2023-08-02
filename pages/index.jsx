@@ -35,7 +35,7 @@ export default function Index() {
     <>
       {user && (
         <div>
-          <h3>Applications List</h3>
+          <h3>Application List</h3>
           <Button
             style={{ marginBottom: '12px', marginTop: '12px' }}
             color="primary"
