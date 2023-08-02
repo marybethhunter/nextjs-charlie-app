@@ -1,26 +1,27 @@
 import { getAccessToken, withApiAuthRequired } from '@auth0/nextjs-auth0';
+import axios from 'axios';
 
 export default withApiAuthRequired(async function actions(req, res) {
   try {
     const { accessToken } = await getAccessToken(req, res, {
-      scopes: ['read:actions']
+
     });
     
-    const devEnvironment = process.env.DEPLOY_ENV;
-    const apiPort = process.env.API_PORT || 3001;
+    const devEnvironment = 'development';
+    const apiPort = process.env.API_PORT || 8080;
     const path =
       devEnvironment === 'development'
         ? `http://localhost:${apiPort}/api/actions`
         : `https://nextjs-charlie.netlify.app/api/actions`;
 
-    const response = await fetch(path, {
+    const response = await axios.get(path, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
         cookie: req.headers.cookie
       }
     });
 
-    const actions = await response.json();
+    const actions = await response.data;
 
     res.status(200).json(actions);
   } catch (error) {
