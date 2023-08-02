@@ -5,9 +5,15 @@ export default withApiAuthRequired(async function actions(req, res) {
     const { accessToken } = await getAccessToken(req, res, {
       scopes: ['read:actions']
     });
-    
+
+    const devEnvironment = process.env.DEPLOY_ENV;
     const apiPort = process.env.API_PORT || 3001;
-    const response = await fetch(`http://localhost:${apiPort}/api/actions`, {
+    const path =
+      devEnvironment === 'development'
+        ? `http://localhost:${apiPort}/api/actions`
+        : `${process.env.DEPLOY_URL}/api/actions`;
+
+    const response = await fetch(path, {
       headers: {
         Authorization: `Bearer ${accessToken}`
       }
