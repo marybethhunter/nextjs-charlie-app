@@ -9,14 +9,13 @@ const jwksRsa = require('jwks-rsa');
 
 const app = express();
 const devEnvironment = process.env.DEPLOY_ENV;
-const port = devEnvironment === 'development' ? process.env.API_PORT : `${process.env.DEPLOY_URL}/api/actions`;
+const port = process.env.API_PORT;
 const baseUrl = process.env.AUTH0_BASE_URL;
 const issuerBaseUrl = process.env.AUTH0_ISSUER_BASE_URL;
 const audience = process.env.AUTH0_AUDIENCE;
 const clientID = process.env.AUTH0_CLIENT_ID;
 const clientSecret = process.env.AUTH0_CLIENT_SECRET;
 const managementAPIaudience = process.env.AUTH0_MGMT_AUDIENCE;
-const netlifyURL = process.env.NETLIFY_DEPLOY_URL;
 
 if (!baseUrl || !issuerBaseUrl) {
   throw new Error('Please make sure that the file .env.local is in place and populated');
@@ -29,7 +28,7 @@ if (!audience) {
 
 app.use(morgan('dev'));
 app.use(helmet());
-app.use(cors({ origin: baseUrl || netlifyURL }));
+app.use(cors({ origin: baseUrl }));
 
 const checkJwt = jwt({
   secret: jwksRsa.expressJwtSecret({
