@@ -10,7 +10,7 @@ export default withApiAuthRequired(async function actions(req, res) {
     const path =
       devEnvironment === 'development'
         ? `http://localhost:${apiPort}/api/actions`
-        : `https://charlie-api-d3e4b8d942b1.herokuapp.com/api/public`;
+        : `https://charlie-api-d3e4b8d942b1.herokuapp.com/api/private-scoped`;
 
     const response = await axios.get(path, {
       headers: {
