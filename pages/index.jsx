@@ -13,7 +13,7 @@ export default function Index() {
     setList(previous => ({ ...previous, isLoading: true }));
 
     try {
-      const response = await fetch('/api/actions');
+      const response = await fetch('/actions');
       const data = await response.json();
 
       setList(previous => ({ ...previous, response: data, error: undefined }));
