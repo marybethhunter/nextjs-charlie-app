@@ -5,7 +5,7 @@ export default withApiAuthRequired(async function actions(req, res) {
   try {
     const { accessToken } = await getAccessToken(req, res, {});
 
-    const devEnvironment = 'production';
+    const devEnvironment = 'development';
     const apiPort = process.env.API_PORT || 3001;
     const path =
       devEnvironment === 'development'
@@ -15,9 +15,7 @@ export default withApiAuthRequired(async function actions(req, res) {
     const response = await axios.get(path, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
-        cookie: req.headers.cookie,
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Credentials': 'true'
+        cookie: req.headers.cookie
       }
     });
 
