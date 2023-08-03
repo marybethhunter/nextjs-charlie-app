@@ -45,7 +45,7 @@ const checkJwt = jwt({
 
 app.use(checkJwt);
 
-app.get('/api/actions', checkJwt, async (req, res) => {
+app.get('/actions', checkJwt, async (req, res) => {
   let options = {
     method: 'POST',
     url: `${issuerBaseUrl}/oauth/token`,
