@@ -10,7 +10,7 @@ export default withApiAuthRequired(async function actions(req, res) {
     const path =
       devEnvironment === 'development'
         ? `http://localhost:${apiPort}/api/actions`
-        : `https://nextjs-charlie.netlify.app/netlify-functions/actions`;
+        : `/netlify-functions/actions`;
 
     const response = await axios.get(path, {
       headers: {
