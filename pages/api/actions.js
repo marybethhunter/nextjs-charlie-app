@@ -3,10 +3,8 @@ import axios from 'axios';
 
 export default withApiAuthRequired(async function actions(req, res) {
   try {
-    const { accessToken } = await getAccessToken(req, res, {
+    const { accessToken } = await getAccessToken(req, res, {});
 
-    });
-    
     const devEnvironment = 'production';
     const apiPort = process.env.API_PORT || 3001;
     const path =
@@ -17,7 +15,9 @@ export default withApiAuthRequired(async function actions(req, res) {
     const response = await axios.get(path, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
-        cookie: req.headers.cookie
+        cookie: req.headers.cookie,
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': 'true'
       }
     });
 
