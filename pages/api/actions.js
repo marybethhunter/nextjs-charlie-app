@@ -5,12 +5,12 @@ export default withApiAuthRequired(async function actions(req, res) {
   try {
     const { accessToken } = await getAccessToken(req, res, {});
 
-    const devEnvironment = 'production';
+    const devEnvironment = 'development';
     const apiPort = process.env.API_PORT || 3001;
     const path =
       devEnvironment === 'development'
         ? `http://localhost:${apiPort}/api/actions`
-        : `https://nextjs-charlie.netlify.app/actions`;
+        : `https://nextjs-charlie.netlify.app/api/actions`;
 
     const response = await axios.get(path, {
       headers: {
