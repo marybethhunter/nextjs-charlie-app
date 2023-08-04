@@ -55,7 +55,7 @@ To do this, first copy `.env.local.example` into a new file in the same folder c
 ```sh
 # random long string
 AUTH0_SECRET=
-# localhost:3000 if running locally
+# http://localhost:3000 if running locally
 AUTH0_BASE_URL=
 # your auth0 domain
 AUTH0_ISSUER_BASE_URL=
